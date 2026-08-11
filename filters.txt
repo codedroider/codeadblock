@@ -1,20 +1,3 @@
-[Adblock Plus 2.0]
-! Title: Filters by hant0508
-! Version: 3.10.6
-! Homepage: https://github.com/hant0508/uBlock-filters
-
-! Recommended to use with:
-! - EasyList
-! - EasyPrivacy
-! - Fanboy’s Enhanced Tracking List
-! - Adblock Warning Removal List
-! - RU AdList
-! - Adguard Russian Filter
-! - Adguard English Filter
-! - Adguard Spyware Filter
-! - RU AdList: Counters (https://easylist-downloads.adblockplus.org/cntblock.txt)
-
-! Exclusions
 #@#.scroll-up-button
 1tv.ru#@#.promo-place
 4pda.ru#@#*:if(:scope > a[rel="nofollow"][href][target="_blank"] ~ * > img[src])
