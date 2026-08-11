@@ -5,12 +5,13 @@
     const cached = GM_getValue("selectors", null);
 
     if (cached && (Date.now() - GM_getValue("time", 0) < 6 * 60 * 60 * 1000)) {
-        injectStyles(JSON.parse(cached));
+        startFilter(JSON.parse(cached));
     } else {
         GM_xmlhttpRequest({
             method: "GET", url: FILTERS_URL, onload: (res) => {
                 const selectors = [];
                 res.responseText.split('\n').forEach(line => {
+                    line = line.trim();
                     if (line.includes('##') && !line.startsWith('@@') && !line.startsWith('|')) {
                         const parts = line.split('##');
                         const site = parts[0].trim();
@@ -23,15 +24,19 @@
                 });
                 GM_setValue("selectors", JSON.stringify(selectors));
                 GM_setValue("time", Date.now());
-                injectStyles(selectors);
+                startFilter(selectors);
             }
         });
     }
 
-    function injectStyles(selectors) {
+    function startFilter(selectors) {
         if (!selectors.length) return;
-        const style = document.createElement('style');
-        style.textContent = `${selectors.join(', ')} { display: none !important; }`;
-        document.documentElement.appendChild(style);
+        const run = () => selectors.forEach(s => { 
+            try { 
+                document.querySelectorAll(s).forEach(e => { e.style.display = 'none'; }); 
+            } catch(e) {} 
+        });
+        run();
+        new MutationObserver(run).observe(document.documentElement, { childList: true, subtree: true });
     }
 })();
